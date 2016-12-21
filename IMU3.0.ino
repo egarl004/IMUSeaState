@@ -1,4 +1,4 @@
-* ============================================
+/* ============================================
   Author: Emerson Garland
 
   I2Cdev device library code is placed under the MIT license
