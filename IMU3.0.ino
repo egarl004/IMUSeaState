@@ -1,4 +1,4 @@
-/* ============================================
+* ============================================
   Author: Emerson Garland
 
   I2Cdev device library code is placed under the MIT license
@@ -47,7 +47,7 @@ MPU6050 accelgyro;
 MPU6050 mpu;
 
 unsigned long previousMillis = 0;
-const long interval = 3000;
+const long interval = 30000;
 int16_t previousYaw;
 int16_t previousPitch;
 int16_t previousRoll;
@@ -211,7 +211,10 @@ void setup() {
   }
   packetSize = mpu.dmpGetFIFOPacketSize();
 }
+
 void(* resetFunc) (void) = 0;
+
+
 void loop() {
 
   while (fifoCount < packetSize)
@@ -383,7 +386,7 @@ void loop() {
   //if the current time - previous time is less than the constant interval
   //defined above and currentYaw is greater than the previousYaw, assign currentYaw's value to previousYaw
 //Serial.println("im just before the if statement");
-  if (currentMillis - previousMillis < interval) {
+  if (currentMillis - previousMillis >= interval) {
       if (oldYaw == currentHighYaw) {
         Serial.println("greater than");
         sameValue = sameValue + 1;
@@ -395,7 +398,7 @@ void loop() {
         //Serial.println(sameValue);
         //delay(1000);
       
-      if (sameValue == 10) {
+      if (sameValue == 100) {
         //Serial.println("going down for reset");
         resetFunc();
       }
@@ -473,15 +476,15 @@ void loop() {
     previousAccelY = 0;
     previousAccelZ = 0;
 
-    //diffYaw = abs(maxYaw - minYaw);
-    //diffRoll = abs(maxRoll - minRoll);
-    //diffPitch = abs(maxPitch - minPitch);
+    diffYaw = abs(maxYaw - minYaw);
+    diffRoll = abs(maxRoll - minRoll);
+    diffPitch = abs(maxPitch - minPitch);
 
   }
 
 
   delay(10);
-  //Serial.println(Mb.R[26]);
+  Serial.println(Mb.R[26]);
   //Serial.print(", ");
   //Serial.print(Mb.R[27]);
   //Serial.print(", ");
