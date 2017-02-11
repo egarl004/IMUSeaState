@@ -43,6 +43,8 @@
 //Ethernet Library *only works with wiznet 5100 chip
 #include <Ethernet.h>
 
+#include <avr/wdt.h>
+
 MPU6050 accelgyro;
 MPU6050 mpu;
 
@@ -210,6 +212,10 @@ void setup() {
 
   }
   packetSize = mpu.dmpGetFIFOPacketSize();
+
+  wdt_disable();
+  delay(15000);
+  wdt_endable(WDTO_8S);
 }
 
 void(* resetFunc) (void) = 0;
@@ -217,6 +223,8 @@ void(* resetFunc) (void) = 0;
 
 void loop() {
 
+  wdt_reset();
+  
   while (fifoCount < packetSize)
   {
     fifoCount = mpu.getFIFOCount();
